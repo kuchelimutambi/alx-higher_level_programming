@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-return all table values (table 'states')
+return states starting with 'N'
 parameters given to script: username, password, database
 """
 
@@ -16,10 +16,11 @@ if __name__ == "__main__":
                          passwd=argv[2],
                          db=argv[3])
 
-    # create cursor to exec queries using SQL
+    # create cursor to exec queries using SQL; filter names starting with 'N'
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM states ORDER BY id ASC")
+    cursor.execute("SELECT * FROM states WHERE name LIKE 'N%' ORDER BY id ASC")
     for row in cursor.fetchall():
-        print(row)
+        if row[1][0] == 'N':
+            print(row)
     cursor.close()
     db.close()

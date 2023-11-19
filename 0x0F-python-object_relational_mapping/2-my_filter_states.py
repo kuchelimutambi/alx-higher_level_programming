@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
-return all table values (table 'states')
-parameters given to script: username, password, database
+return matching states
+parameters given to script: username, password, database, state to match
 """
 
 import MySQLdb
@@ -16,10 +16,14 @@ if __name__ == "__main__":
                          passwd=argv[2],
                          db=argv[3])
 
-    # create cursor to exec queries using SQL
+    # create cursor to exec queries using SQL; match arg given
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM states ORDER BY id ASC")
+    sql_cmd = """SELECT *
+                 FROM states
+                 WHERE name LIKE '{:s}' ORDER BY id ASC""".format(argv[4])
+    cursor.execute(sql_cmd)
     for row in cursor.fetchall():
-        print(row)
+        if row[1] == argv[4]:
+            print(row)
     cursor.close()
     db.close()
